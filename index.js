@@ -57,32 +57,32 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-//get books list route
+
+// get books by category route
 app.get('/api/books', (req, res) => {
-  Book.find()
+  if(req.query.category) {
+    Book.find({ category: req.query.category })
+      .then(books => res.status(200).json(books))
+      .catch(err => res.status(400).json('Error: ' + err));
+  } 
+// get books by author and category route
+  else if(req.params.author & req.params.category){
+    Book.find({ author: req.params.author, category: req.params.category })
     .then(books => res.status(200).json(books))
     .catch(err => res.status(400).json('Error: ' + err));
+  }
+// get books list route
+  else {
+    Book.find()
+    .then(books => res.status(200).json(books))
+    .catch(err => res.status(400).json('Error: ' + err));
+  }
 });
 
 //get book details route
 app.get('/api/books/:id', (req, res) => {
   Book.findById(req.params.id)
     .then(book => res.status(200).json(book))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
-
-//get books by category route
-app.get('/api/books?category=:category', (req, res) => {
-  console.log("categorryyyyyyyyyy")
-  Book.find({ category: req.params.category })
-    .then(books => res.status(200).json(books))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
-
-//get books by author and category route
-app.get('/api/books?author=:author&category=:category', (req, res) => {
-  Book.find({ author: req.params.author, category: req.params.category })
-    .then(books => res.status(200).json(books))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
