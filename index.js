@@ -79,12 +79,20 @@ app.get('/api/books', (req, res) => {
   }
 });
 
+
 //get book details route
 app.get('/api/books/:id', (req, res) => {
   Book.findById(req.params.id)
     .then(book => res.status(200).json(book))
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+
+
+
+
+
+
 
 //add book route (protected route)
 app.post('/api/books', verifyToken, (req, res) => {
